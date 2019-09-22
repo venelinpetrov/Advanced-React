@@ -28,7 +28,6 @@ const ALL_ITEMS_QUERY = gql`
         }
     }
 `;
-
 export default class Items extends Component {
     render() {
         return (
@@ -51,3 +50,5 @@ export default class Items extends Component {
         )
     }
 }
+
+export { ALL_ITEMS_QUERY };
