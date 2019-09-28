@@ -32,12 +32,33 @@ class CreateItem extends Component {
         description: '',
         image: '',
         largeImage: '',
-        price: 0
+        price: 0,
+        previewLoading: false
     }
     handleChange = e => {
         const { name, type, value } = e.target;
         const val = type === 'number' ? parseFloat(value) : value;
         this.setState({ [name]: val });
+    }
+    uploadFile = async e => {
+        this.setState({ previewLoading: true })
+        const files = e.target.files;
+        const data = new FormData();
+        data.append('file', files[0]);
+        data.append('upload_preset', 'sickfits');
+
+        const res = await fetch('https://api.cloudinary.com/v1_1/dnaaiid3i/image/upload', {
+            method: 'POST',
+            body: data
+        });
+
+        const file = await res.json();
+
+        this.setState({ previewLoading: false });
+        this.setState({
+            image: file.secure_url,
+            largeImage: file.eager[0].secure_url
+        });
     }
     render() {
         return (
@@ -55,9 +76,20 @@ class CreateItem extends Component {
                         <h2>Sell an item</h2>
                         <Error error={error}/>
                         <fieldset disabled={loading} aria-busy={loading}>
+                            <label htmlFor="file">
+                                Upload
+                                <input
+                                    type="file"
+                                    id="file"
+                                    name="file"
+                                    placeholder="file"
+                                    onChange={this.uploadFile}
+                                    required />
+                                    {this.state.image && <img src={this.state.image} alt="Upload image" width="200"/>}
+                            </label>
                             <label htmlFor="title">
                                 Title
-                        <input
+                                <input
                                     type="text"
                                     id="title"
                                     name="title"
@@ -68,7 +100,7 @@ class CreateItem extends Component {
                             </label>
                             <label htmlFor="description">
                                 Description
-                        <textarea
+                                <textarea
                                     type="text"
                                     id="description"
                                     name="description"
@@ -79,7 +111,7 @@ class CreateItem extends Component {
                             </label>
                             <label htmlFor="price">
                                 Price
-                        <input
+                                <input
                                     type="number"
                                     id="price"
                                     name="price"
@@ -90,7 +122,7 @@ class CreateItem extends Component {
                                     required />
                             </label>
                         </fieldset>
-                        <button type="submit">Submit</button>
+                        <button type="submit" disabled={this.state.previewLoading}>Submit</button>
                     </Form>
                 )}
             </Mutation>
