@@ -19,6 +19,7 @@ const Mutations = {
 
     async updateItem(parent, args, ctx, info) {
         const updates = { ...args };
+        console.log({ args, ctx, info })
 
         delete updates.id;
 
@@ -30,6 +31,15 @@ const Mutations = {
             info
         });
 
+        return item;
+    },
+
+    async deleteItem(parent, args, ctx, info) {
+        console.log({args, ctx, info })
+        const where = { id: args.id };
+
+        const item = await ctx.db.query.item({ where }, `{ id, title }`);
+        ctx.db.mutation.deleteItem({ where }, info);
         return item;
     }
 };
