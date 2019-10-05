@@ -12,14 +12,11 @@ const Mutations = {
             info
         );
 
-        console.log(item);
-
         return item;
     },
 
     async updateItem(parent, args, ctx, info) {
         const updates = { ...args };
-        console.log({ args, ctx, info })
 
         delete updates.id;
 
@@ -35,7 +32,6 @@ const Mutations = {
     },
 
     async deleteItem(parent, args, ctx, info) {
-        console.log({args, ctx, info })
         const where = { id: args.id };
 
         const item = await ctx.db.query.item({ where }, `{ id, title }`);
