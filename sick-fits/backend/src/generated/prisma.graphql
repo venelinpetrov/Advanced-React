@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/venelin-petrov-7aadab/sick-fits/dev
-# timestamp: Sun Sep 15 2019 14:58:48 GMT+0300 (Eastern European Summer Time)
+# timestamp: Sun Apr 26 2020 12:03:56 GMT+0300 (Eastern European Summer Time)
 
 type AggregateItem {
   count: Int!
